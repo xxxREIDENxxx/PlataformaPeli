@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pelicula.titulo }} - PlataformaPelis</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #222;
+            color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        h2 {
+            color: #ffcc00;
+        }
+        img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #ff9900;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ pelicula.titulo }}</h2>
+        {% if pelicula.imagen %}
+            <img src="{{ pelicula.imagen.url }}" alt="Imagen de {{ pelicula.titulo }}">
+        {% else %}
+            <p>No hay imagen disponible.</p>
+        {% endif %}
+        <p>{{ pelicula.descripcion }}</p>
+        <p>Género: {{ pelicula.genero.nombre }}</p>
+        <p>Visualizaciones: {{ pelicula.visualizaciones }}</p>
+        <a href="{% url 'registrar_visualizacion' pelicula.id %}" class="button">Marcar como Vista</a>
+        <!-- Botón para marcar como vista -->
+        {% if not pelicula.visualizaciones.filter(usuario=request.user).exists %}
+            <a href="{% url 'marcar_como_vista' pelicula.id %}">Marcar como vista</a>
+        {% else %}
+            <p>Ya has visto esta película.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

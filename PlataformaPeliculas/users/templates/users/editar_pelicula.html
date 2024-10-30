@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Película</title>
+    <style>
+        /* Usa los mismos estilos de agregar película */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="form-title">Editar Película: {{ pelicula.titulo }}</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="submit-button">Guardar Cambios</button>
+        </form>
+        <a href="{% url 'peliculas_listado' %}" class="back-button">Volver al Listado</a>
+    </div>
+</body>
+</html>

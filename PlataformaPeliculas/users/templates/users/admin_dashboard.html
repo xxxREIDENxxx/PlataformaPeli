@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrador - PlataformaPelis</title>
+    <style>
+        /* Estilos generales */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            background-image: url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDl8fG1vdmllfGVufDB8fHx8MTY4NzAwMzA5Mg&ixlib=rb-4.0.3&q=80&w=1080');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            color: #f5f5f5;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #ffcc00;
+            margin-bottom: 1em;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            background-color: #ffcc00;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #ff9900;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Dashboard del Administrador</h2>
+        <p>Bienvenido, {{ request.user.username }}.</p>
+
+        <!-- Botón para ver el listado de películas -->
+        <a href="{% url 'peliculas_listado' %}" class="button">Ver Películas</a>
+
+        <!-- Otros botones de administración -->
+        <a href="{% url 'agregar_pelicula' %}" class="button">Agregar Película</a>
+        <a href="{% url 'agregar_genero' %}" class="button">Agregar Género</a>
+    </div>
+</body>
+</html>

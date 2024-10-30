@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Películas - PlataformaPelis</title>
+    <style>
+        /* Estilos generales de la página */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            background-image: url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDl8fG1vdmllfGVufDB8fHx8MTY4NzAwMzA5Mg&ixlib=rb-4.0.3&q=80&w=1080');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            color: #f5f5f5;
+        }
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .back-button {
+            padding: 10px 20px;
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+        .back-button:hover {
+            background-color: #333;
+        }
+        h2 {
+            color: #ffcc00;
+            margin-bottom: 1em;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        select, input[type="text"] {
+            padding: 10px;
+            margin: 5px;
+            width: 100%;
+            max-width: 300px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+        .filter-button {
+            padding: 10px 20px;
+            background-color: #ffcc00;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        .filter-button:hover {
+            background-color: #ff9900;
+        }
+        .movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .movie-item {
+            background-color: rgba(0, 0, 0, 0.8);
+            width: 200px;
+            padding: 1em;
+            border-radius: 10px;
+            text-align: center;
+            color: #f5f5f5;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .movie-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .movie-title {
+            font-size: 1.2em;
+            color: #ffcc00;
+        }
+        .view-button, .viewed-message {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .view-button {
+            background-color: #ffcc00;
+            color: #333;
+            cursor: pointer;
+        }
+        .view-button:hover {
+            background-color: #ff9900;
+        }
+        .viewed-message {
+            background-color: #888;
+            color: #fff;
+        }
+        .edit-delete-container {
+            margin-top: 10px;
+        }
+        .edit-button, .delete-button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #fff;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+        }
+        .edit-button {
+            background-color: #4CAF50;
+        }
+        .edit-button:hover {
+            background-color: #45a049;
+        }
+        .delete-button {
+            background-color: #f44336;
+        }
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón de Regresar -->
+    <a href="{% url 'dashboard' %}" class="back-button">Regresar al Inicio</a>
+
+    <!-- Contenedor Principal -->
+    <div class="container">
+        <h2>Listado de Películas</h2>
+
+        <div class="filter-container">
+            <form method="get" style="display: flex; flex-direction: column; align-items: center;">
+                <select name="genero">
+                    <option value="">Todos los Géneros</option>
+                    {% for genero in generos %}
+                        <option value="{{ genero.id }}" {% if genero.id == request.GET.genero %}selected{% endif %}>{{ genero.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" name="titulo" placeholder="Buscar por título" value="{{ request.GET.titulo }}">
+                <button type="submit" class="filter-button">Filtrar</button>
+            </form>
+        </div>
+
+        <div class="movie-list">
+            {% for pelicula in peliculas %}
+                <div class="movie-item">
+                    {% if pelicula.imagen %}
+                        <img src="{{ pelicula.imagen.url }}" alt="Imagen de {{ pelicula.titulo }}">
+                    {% else %}
+                        <p>No hay imagen disponible.</p>
+                    {% endif %}
+                    <h3 class="movie-title">{{ pelicula.titulo }}</h3>
+                    <p>Género: {{ pelicula.genero.nombre }}</p>
+                    <p>{{ pelicula.descripcion|truncatewords:15 }}</p>
+                    <p>Visualizaciones: {{ pelicula.visualizaciones }}</p>
+
+                    <!-- Botón para marcar como vista solo para usuarios no admin -->
+                    {% if not pelicula.vista and not request.user.is_staff and not request.user.is_superuser %}
+                        <a href="{% url 'marcar_como_vista' pelicula.id %}" class="view-button">Marcar como vista</a>
+                    {% elif pelicula.vista %}
+                        <span class="viewed-message">Ya has visto esta película</span>
+                    {% endif %}
+
+                    <!-- Enlaces de Editar y Eliminar solo para administradores -->
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                        <div class="edit-delete-container">
+                            <a href="{% url 'editar_pelicula' pelicula.id %}" class="edit-button">Editar</a>
+                            <a href="{% url 'eliminar_pelicula' pelicula.id %}" class="delete-button" onclick="return confirm('¿Estás seguro de que quieres eliminar esta película?');">Eliminar</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p>No se encontraron películas.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

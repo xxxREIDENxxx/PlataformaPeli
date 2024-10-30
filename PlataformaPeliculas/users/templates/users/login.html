@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - PlataformaPelis</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('https://via.placeholder.com/800x600.png?text=Movie+Background');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            color: #f5f5f5;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 2em;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            text-align: center;
+        }
+        h2 {
+            color: #ffcc00;
+            margin-bottom: 1em;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"], input[type="password"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+        button {
+            padding: 10px;
+            margin-top: 1em;
+            background-color: #ffcc00;
+            color: #000;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff9900;
+        }
+        .footer {
+            margin-top: 1em;
+            font-size: 0.9em;
+            color: #bbb;
+        }
+        .footer a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>PlataformaPelis - Iniciar Sesión</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Iniciar sesión</button>
+        </form>
+        <div class="footer">
+            <p>¿No tienes una cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
+        </div>
+    </div>
+</body>
+</html>
